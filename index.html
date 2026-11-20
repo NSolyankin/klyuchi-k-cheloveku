@@ -19,7 +19,7 @@ html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.35 -apple-
 header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(env(safe-area-inset-top) + 10px) 16px 8px;border-bottom:1px solid var(--line)}
 header h1{margin:0;font-size:20px}
 header .sub{color:var(--muted);font-size:13px}
-main{padding:12px 12px calc(90px + env(safe-area-inset-bottom))}
+main{max-width:640px;margin:0 auto;padding:12px 12px calc(90px + env(safe-area-inset-bottom))}
 nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:10}
 nav button{flex:1;background:none;border:0;padding:9px 0 7px;color:var(--muted);font-size:12px}
 nav button b{display:block;font-size:20px;font-weight:400;line-height:1.1}
@@ -164,13 +164,15 @@ function renderRate(){
   let h=`<div class="card">
    <div class="seg" id="typeSeg"><button data-t="char" class="${draft.type==="char"?"on":""}">Характер (12)</button><button data-t="temp" class="${draft.type==="temp"?"on":""}">Темперамент (16)</button></div>
    <label class="f">Кого оцениваю</label>
-   <select id="target"><option value="">— выбери человека —</option>${opts(draft.target)}</select>
+   <select id="target"><option value="">— выбери человека —</option>${opts(draft.target)}<option value="__new">＋ Добавить человека…</option></select>
+   <div class="row hidden" id="add-target" style="margin-top:6px"><input type="text" placeholder="Имя или фамилия"><button class="btn" style="flex:0 0 auto;width:auto;margin:0;padding:9px 16px">Добавить</button></div>
    <label class="f">Кто оценивает</label>
-   <select id="rater">${opts(draft.rater)}</select>
+   <select id="rater">${opts(draft.rater)}<option value="__new">＋ Добавить человека…</option></select>
+   <div class="row hidden" id="add-rater" style="margin-top:6px"><input type="text" placeholder="Имя или фамилия"><button class="btn" style="flex:0 0 auto;width:auto;margin:0;padding:9px 16px">Добавить</button></div>
    <div class="row"><div><label class="f">Дата</label><input type="date" id="date" value="${esc(draft.date)}"></div>
    <div><label class="f">Ситуация</label><input type="text" id="sit" list="sits" placeholder="занятие, поединок…" value="${esc(draft.situation)}"></div></div>
    <datalist id="sits">${sits.map(s=>`<option value="${esc(s)}">`).join("")}</datalist>
-   ${!S.people.some(p=>!p.self)?`<div class="hint">Добавь одногруппников на вкладке «Люди».</div>`:""}
+   ${!S.people.some(p=>!p.self)?`<div class="hint">Чтобы добавить одногруппника, выбери в списке «＋ Добавить человека…».</div>`:""}
   </div>`;
   if(draft.type==="char"){
     h+=`<div class="hint">5 — свойство слева проявляется всегда, 4 — в большинстве случаев, 3 — поровну, 2 — чаще противоположное, 1 — противоположное всегда. Повторное нажатие снимает оценку.</div>`;
@@ -189,9 +191,16 @@ function renderRate(){
   ${draft.id?`<button class="btn sec" id="cancelBtn">Отменить правку</button><button class="btn danger" id="delBtn">Удалить оценку</button>`:""}`;
   app.innerHTML=h;
   const bind=(id,f)=>{const el=document.getElementById(id);if(el)el.addEventListener("input",()=>{draft[f]=el.value})};
-  bind("target","target");bind("rater","rater");bind("date","date");bind("sit","situation");bind("note","note");
-  document.getElementById("target").addEventListener("change",e=>draft.target=e.target.value);
-  document.getElementById("rater").addEventListener("change",e=>draft.rater=e.target.value);
+  bind("date","date");bind("sit","situation");bind("note","note");
+  ["target","rater"].forEach(f=>{
+    const sel=document.getElementById(f),row=document.getElementById("add-"+f),inp=row.querySelector("input"),btn=row.querySelector("button");
+    sel.addEventListener("change",()=>{
+      if(sel.value==="__new"){row.classList.remove("hidden");inp.value="";inp.focus();sel.value=draft[f]||""}
+      else{draft[f]=sel.value;row.classList.add("hidden")}
+    });
+    const add=()=>{const p=addPerson(inp.value);if(!p)return;draft[f]=p.id;renderRate()};
+    btn.onclick=add;inp.addEventListener("keydown",e=>{if(e.key==="Enter")add()});
+  });
   document.getElementById("typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.dataset.t===draft.type)return;
     if(Object.keys(draft.values).length&&!confirm("Сменить таблицу? Отметки в текущей сбросятся."))return;
     draft.type=b.dataset.t;draft.values={};renderRate()});
@@ -244,12 +253,16 @@ function renderPeople(){
   <div class="card list">`+S.people.map(p=>{const cnt=S.items.filter(i=>i.target===p.id).length;
     return `<div class="e" data-id="${p.id}"><div><div class="t1">${esc(p.name)}${p.self?" (я)":""}</div><div class="t2">оценок: ${cnt}</div></div><span class="muted">›</span></div>`}).join("")+`</div>`;
   app.innerHTML=h;
-  const add=()=>{const v=document.getElementById("newName").value.trim();if(!v)return;
-    if(S.people.some(p=>p.name.toLowerCase()===v.toLowerCase())){toast("Такой человек уже есть");return}
-    S.people.push({id:uid(),name:v,self:false});save();renderPeople();toast("Добавлен: "+v)};
+  const add=()=>{if(addPerson(document.getElementById("newName").value))renderPeople()};
   document.getElementById("addP").onclick=add;
   document.getElementById("newName").addEventListener("keydown",e=>{if(e.key==="Enter")add()});
   app.querySelectorAll(".e").forEach(e=>e.onclick=()=>{curPerson=e.dataset.id;tab="person";render();window.scrollTo(0,0)});
+}
+function addPerson(name){
+  const v=String(name||"").trim();if(!v){toast("Впиши имя");return null}
+  const ex=S.people.find(p=>p.name.toLowerCase()===v.toLowerCase());
+  if(ex){toast("Уже есть: "+ex.name);return ex}
+  const p={id:uid(),name:v,self:false};S.people.push(p);save();toast("Добавлен: "+v);return p;
 }
 function avg(a){a=a.filter(x=>x!==undefined&&x!==null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null}
 function fmt(x){return x===null?"—":(Math.round(x*10)/10).toString().replace(".",",")}
