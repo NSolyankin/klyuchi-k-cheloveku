@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ключи">
+<meta name="theme-color" content="#1f4e79">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<title>Ключи к человеку</title>
+<style>
+:root{--bg:#f2f2f7;--card:#fff;--text:#1c1c1e;--muted:#6e6e73;--line:#d1d1d6;--accent:#1f4e79;--accent2:#e3ecf6;--left:#2f7d4f;--right:#a14a2a;--danger:#c62828}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--card:#1c1c1e;--text:#f2f2f7;--muted:#98989f;--line:#38383a;--accent:#6aa7e0;--accent2:#1d2b3a;--left:#5fc28a;--right:#e58b67;--danger:#ff6b6b}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(env(safe-area-inset-top) + 10px) 16px 8px;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:20px}
+header .sub{color:var(--muted);font-size:13px}
+main{padding:12px 12px calc(90px + env(safe-area-inset-bottom))}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav button{flex:1;background:none;border:0;padding:9px 0 7px;color:var(--muted);font-size:12px}
+nav button b{display:block;font-size:20px;font-weight:400;line-height:1.1}
+nav button.on{color:var(--accent)}
+.card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px}
+label.f{display:block;font-size:13px;color:var(--muted);margin:8px 0 4px}
+select,input[type=text],input[type=date],textarea{width:100%;font:inherit;font-size:16px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text)}
+textarea{min-height:60px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.seg{display:flex;border:1px solid var(--accent);border-radius:9px;overflow:hidden}
+.seg button{flex:1;border:0;background:none;color:var(--accent);padding:9px 2px;font-size:15px}
+.seg button+button{border-left:1px solid var(--accent)}
+.seg button.on{background:var(--accent);color:#fff}
+.btn{display:block;width:100%;border:0;border-radius:11px;padding:13px;font-size:17px;font-weight:600;background:var(--accent);color:#fff;margin:8px 0}
+.btn.sec{background:var(--accent2);color:var(--accent)}
+.btn.danger{background:none;color:var(--danger);border:1px solid var(--danger)}
+.btn:disabled{opacity:.45}
+.item{background:var(--card);border-radius:12px;padding:10px 10px 12px;margin-bottom:8px}
+.item .lr{display:flex;justify-content:space-between;gap:10px;font-size:15px;margin-bottom:8px}
+.item .lr .l{color:var(--left)}.item .lr .r{color:var(--right);text-align:right}
+.item.t .lr{font-size:13.5px}.item.t .lr>div{flex:1}
+.item .num{color:var(--muted);font-size:12px;margin-bottom:4px}
+.scale{display:flex;gap:5px}
+.scale button{flex:1;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:8px;padding:10px 0;font-size:16px;min-height:44px}
+.scale.t button{font-size:11.5px;padding:8px 0;line-height:1.15}
+.scale button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.progress{font-size:13px;color:var(--muted);text-align:center;margin:4px 0 8px}
+.list .e{display:flex;justify-content:space-between;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line)}
+.list .e:last-child{border-bottom:0}
+.e .t1{font-weight:600}.e .t2{font-size:13px;color:var(--muted)}
+.badge{font-size:11px;padding:2px 7px;border-radius:10px;background:var(--accent2);color:var(--accent);white-space:nowrap}
+.badge.new{background:#fff3cd;color:#8a6100}
+@media (prefers-color-scheme:dark){.badge.new{background:#3a2f0b;color:#ffd66b}}
+h2{font-size:17px;margin:4px 0 8px}
+.muted{color:var(--muted);font-size:13px}
+table.s{width:100%;border-collapse:collapse;font-size:14px}
+table.s td,table.s th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+table.s th{font-size:12px;color:var(--muted);font-weight:500}
+table.s td.n{text-align:center;width:52px}
+.bar{height:6px;background:var(--line);border-radius:3px;position:relative;margin-top:3px}
+.bar i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:3px}
+.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#333;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:20}
+.toast.on{opacity:.95}
+.hint{font-size:13px;color:var(--muted);background:var(--accent2);border-radius:10px;padding:10px;margin:8px 0}
+.chk{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:15px}
+.chk input{width:22px;height:22px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header><h1 id="title">Новая оценка</h1><div class="sub">Лутошкин «Как вести за собой» · «Ключи к человеку»</div></header>
+<main id="app"></main>
+<nav id="nav">
+  <button data-tab="rate"><b>✎</b>Оценить</button>
+  <button data-tab="list"><b>☰</b>Записи</button>
+  <button data-tab="people"><b>☺</b>Люди</button>
+  <button data-tab="export"><b>⇪</b>Экспорт</button>
+</nav>
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+// ---------- Данные методик ----------
+const CHAR = [
+ ["справедливый","Справедливый","Несправедливый"],
+ ["добрый","Добрый","Злой"],
+ ["чуткий","Чуткий","Нечуткий"],
+ ["трудолюбивый","Трудолюбивый","Ленивый"],
+ ["добросовестный","Добросовестный","Недобросовестный"],
+ ["ответственный","Ответственный","Безответственный"],
+ ["аккуратный","Аккуратный","Неаккуратный"],
+ ["скромный","Скромный","Нескромный"],
+ ["правдивый","Правдивый","Лживый"],
+ ["смелый","Смелый","Трусливый"],
+ ["дисциплинированный","Дисциплинированный","Недисциплинированный"],
+ ["серьёзный","Серьёзный","Легкомысленный"]
+];
+const TEMP = [
+ ["весёлость","Всегда веселое настроение, много улыбается и делает веселыми других.","Часто считает себя несчастным, редко улыбается, мало шутит."],
+ ["центр_внимания","Находясь в центре внимания, чувствует себя уверенно.","В этих случаях чувствует себя неловко, стесняется."],
+ ["настроение","Настроение часто меняется, его легко можно вывести из себя.","Обычно настроение ровное, его трудно вывести из равновесия."],
+ ["темп","Быстр, резок в движениях, жестах, торопится, когда говорит.","Движения, жесты, речь замедленны, сдержан, голос тихий."],
+ ["неудачи","Быстро забывает о неудачах и берется за работу.","При неудачах очень долго переживает, волнуется, не может взяться за дело."],
+ ["знакомства","Легко знакомится, у него много друзей, товарищей.","С людьми сходится с трудом, друзей немного."],
+ ["планы","У него масса планов и замыслов; ничего, что одни осуществляются, а другие нет.","Долго бьется над решением одной задачи, пытается докопаться до конца."],
+ ["общество","Постоянно стремится быть с кем-либо; чувствует себя плохо, когда остается один.","Не ищет встреч с людьми, ему одному бывает лучше."],
+ ["чувства","Хочет, чтобы его радости или горе были замечены другими людьми.","Все свои чувства стремится переживать в одиночку."],
+ ["замечания","Когда получает замечания, то шумно ведет себя, спорит, оправдывается.","Выслушивает замечания внешне спокойно, старается не спорить."],
+ ["усталость","После выполнения трудного задания может быстро браться за другое.","Быстро устает и долго чувствует себя усталым."],
+ ["обиды","Быстро забывает обиды и огорчения.","Долго после этого не может прийти в себя."],
+ ["шутки","Любит подшучивать над друзьями, часто не задумываясь, приятно ли это им.","Он редко шутит сам и часто обижается на шутки."],
+ ["начало_дела","Любит сразу приступать к делу, не особенно задумываясь, что будет потом.","Любит все продумать заранее, тщательно спланировать, рассчитать."],
+ ["решения","Быстро находит выход из трудного положения.","Долго раздумывает, размышляет, волнуется, прежде чем принять решение."],
+ ["новости","Постоянно ждет новостей, ему не по себе, когда молчит радио, не работает телевизор, когда неразговорчивы друзья.","Для него, чем меньше новостей, тем лучше: можно над чем-нибудь подумать."]
+];
+const TEMP_BTN = [[2,"очень\nпохож"],[1,"в осн.\nпохож"],[0,"и тот\nи другой"],[-1,"в осн.\nпохож"],[-2,"очень\nпохож"]];
+const TEMP_WORD = {"2":"очень похож на левого","1":"в основном похож на левого","0":"похож на того и другого","-1":"в основном похож на правого","-2":"очень похож на правого"};
+const TYPE_RU = {char:"характер",temp:"темперамент"};
+
+// ---------- Хранилище ----------
+const KEY = "lutoshkin-keys-v1";
+let S;
+function load(){
+  try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+  if(!S||!S.people){S={people:[{id:uid(),name:"Я",self:true}],items:[],settings:{vault:"",folder:"Оценки"}}}
+  S.settings=Object.assign({vault:"",folder:"Оценки"},S.settings||{});
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast("Не удалось сохранить: "+e.message)}}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function today(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+function person(id){return S.people.find(p=>p.id===id)}
+function pname(id){const p=person(id);return p?p.name:"?"}
+function selfId(){const p=S.people.find(p=>p.self);return p?p.id:null}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove("on"),2000)}
+if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(()=>{})}
+
+// ---------- Черновик формы ----------
+let draft=null;
+function newDraft(type){
+  const last=S.items[S.items.length-1];
+  return {id:null,type:type||(draft&&draft.type)||"char",target:(draft&&draft.target)||"",rater:(draft&&draft.rater)||selfId(),date:today(),situation:(draft&&draft.situation)||(last?last.situation:""),note:"",values:{}};
+}
+
+// ---------- Вкладки ----------
+let tab="rate";
+document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button");if(b){tab=b.dataset.tab;render();window.scrollTo(0,0)}});
+function render(){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  ({rate:renderRate,list:renderList,people:renderPeople,export:renderExport,person:renderPerson})[tab]();
+}
+const app=document.getElementById("app");
+const title=t=>document.getElementById("title").textContent=t;
+
+// ---------- Оценить ----------
+function renderRate(){
+  if(!draft)draft=newDraft();
+  title(draft.id?"Правка оценки":"Новая оценка");
+  const opts=(sel)=>S.people.map(p=>`<option value="${p.id}" ${p.id===sel?"selected":""}>${esc(p.name)}${p.self?" (я)":""}</option>`).join("");
+  const sits=[...new Set(S.items.map(i=>i.situation).filter(Boolean))];
+  const defs=draft.type==="char"?CHAR:TEMP;
+  const filled=defs.filter(d=>draft.values[d[0]]!==undefined).length;
+  let h=`<div class="card">
+   <div class="seg" id="typeSeg"><button data-t="char" class="${draft.type==="char"?"on":""}">Характер (12)</button><button data-t="temp" class="${draft.type==="temp"?"on":""}">Темперамент (16)</button></div>
+   <label class="f">Кого оцениваю</label>
+   <select id="target"><option value="">— выбери человека —</option>${opts(draft.target)}</select>
+   <label class="f">Кто оценивает</label>
+   <select id="rater">${opts(draft.rater)}</select>
+   <div class="row"><div><label class="f">Дата</label><input type="date" id="date" value="${esc(draft.date)}"></div>
+   <div><label class="f">Ситуация</label><input type="text" id="sit" list="sits" placeholder="занятие, поединок…" value="${esc(draft.situation)}"></div></div>
+   <datalist id="sits">${sits.map(s=>`<option value="${esc(s)}">`).join("")}</datalist>
+   ${!S.people.some(p=>!p.self)?`<div class="hint">Добавь одногруппников на вкладке «Люди».</div>`:""}
+  </div>`;
+  if(draft.type==="char"){
+    h+=`<div class="hint">5 — свойство слева проявляется всегда, 4 — в большинстве случаев, 3 — поровну, 2 — чаще противоположное, 1 — противоположное всегда. Повторное нажатие снимает оценку.</div>`;
+    CHAR.forEach(([k,l,r])=>{const v=draft.values[k];
+      h+=`<div class="item"><div class="lr"><div class="l">${l}</div><div class="r">${r}</div></div>
+      <div class="scale" data-k="${k}">${[5,4,3,2,1].map(n=>`<button data-v="${n}" class="${v===n?"on":""}">${n}</button>`).join("")}</div></div>`});
+  }else{
+    h+=`<div class="hint">На кого больше похож человек: на описанного слева или справа? Можно оставить пункт пустым, если не наблюдал. Повторное нажатие снимает отметку.</div>`;
+    TEMP.forEach(([k,l,r],i)=>{const v=draft.values[k];
+      h+=`<div class="item t"><div class="num">${i+1} из 16</div><div class="lr"><div class="l">${l}</div><div class="r">${r}</div></div>
+      <div class="scale t" data-k="${k}">${TEMP_BTN.map(([n,t])=>`<button data-v="${n}" class="${v===n?"on":""}">${t.replace("\n","<br>")}</button>`).join("")}</div></div>`});
+  }
+  h+=`<div class="card"><label class="f">Заметка (что наблюдал)</label><textarea id="note">${esc(draft.note)}</textarea></div>
+  <div class="progress" id="prog">Заполнено ${filled} из ${defs.length}</div>
+  <button class="btn" id="saveBtn">${draft.id?"Сохранить изменения":"Сохранить оценку"}</button>
+  ${draft.id?`<button class="btn sec" id="cancelBtn">Отменить правку</button><button class="btn danger" id="delBtn">Удалить оценку</button>`:""}`;
+  app.innerHTML=h;
+  const bind=(id,f)=>{const el=document.getElementById(id);if(el)el.addEventListener("input",()=>{draft[f]=el.value})};
+  bind("target","target");bind("rater","rater");bind("date","date");bind("sit","situation");bind("note","note");
+  document.getElementById("target").addEventListener("change",e=>draft.target=e.target.value);
+  document.getElementById("rater").addEventListener("change",e=>draft.rater=e.target.value);
+  document.getElementById("typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.dataset.t===draft.type)return;
+    if(Object.keys(draft.values).length&&!confirm("Сменить таблицу? Отметки в текущей сбросятся."))return;
+    draft.type=b.dataset.t;draft.values={};renderRate()});
+  app.querySelectorAll(".scale").forEach(sc=>sc.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    const k=sc.dataset.k,v=Number(b.dataset.v);
+    if(draft.values[k]===v)delete draft.values[k];else draft.values[k]=v;
+    sc.querySelectorAll("button").forEach(x=>x.classList.toggle("on",Number(x.dataset.v)===draft.values[k]));
+    const n=defs.filter(d=>draft.values[d[0]]!==undefined).length;
+    document.getElementById("prog").textContent=`Заполнено ${n} из ${defs.length}`;
+  }));
+  document.getElementById("saveBtn").onclick=saveDraft;
+  const c=document.getElementById("cancelBtn");if(c)c.onclick=()=>{draft=newDraft();renderRate()};
+  const d=document.getElementById("delBtn");if(d)d.onclick=()=>{if(confirm("Удалить эту оценку?")){S.items=S.items.filter(i=>i.id!==draft.id);save();draft=newDraft();toast("Удалено");tab="list";render()}};
+}
+function saveDraft(){
+  if(!draft.target){toast("Выбери, кого оцениваешь");return}
+  if(!draft.rater){toast("Выбери, кто оценивает");return}
+  if(!Object.keys(draft.values).length){toast("Нет ни одной отметки");return}
+  const now=new Date().toISOString();
+  if(draft.id){const it=S.items.find(i=>i.id===draft.id);Object.assign(it,JSON.parse(JSON.stringify(draft)),{updated:now,exportedAt:null})}
+  else{S.items.push(Object.assign(JSON.parse(JSON.stringify(draft)),{id:uid(),created:now,updated:now,exportedAt:null}))}
+  save();
+  const wasEdit=!!draft.id;
+  draft=newDraft(draft.type);draft.target="";
+  toast(wasEdit?"Изменения сохранены":"Оценка сохранена");
+  if(wasEdit){tab="list";render()}else{renderRate();window.scrollTo(0,0)}
+}
+
+// ---------- Записи ----------
+let listFilter="";
+function renderList(){
+  title("Записи");
+  const items=S.items.filter(i=>!listFilter||i.target===listFilter).sort((a,b)=>(b.date+b.created).localeCompare(a.date+a.created));
+  let h=`<div class="card"><select id="flt"><option value="">Все люди (${S.items.length})</option>${S.people.map(p=>`<option value="${p.id}" ${p.id===listFilter?"selected":""}>${esc(p.name)}</option>`).join("")}</select></div>`;
+  if(!items.length)h+=`<div class="card muted">Пока нет оценок.</div>`;
+  else h+=`<div class="card list">`+items.map(i=>{const defs=i.type==="char"?CHAR:TEMP;const n=defs.filter(d=>i.values[d[0]]!==undefined).length;
+    return `<div class="e" data-id="${i.id}"><div><div class="t1">${esc(pname(i.target))} · ${TYPE_RU[i.type]}</div>
+    <div class="t2">${esc(i.date)} · оценщик: ${esc(pname(i.rater))}${i.situation?" · "+esc(i.situation):""} · ${n}/${defs.length}</div></div>
+    ${i.exportedAt?`<span class="badge">выгружено</span>`:`<span class="badge new">новая</span>`}</div>`}).join("")+`</div>`;
+  app.innerHTML=h;
+  document.getElementById("flt").onchange=e=>{listFilter=e.target.value;renderList()};
+  app.querySelectorAll(".e").forEach(e=>e.onclick=()=>{draft=JSON.parse(JSON.stringify(S.items.find(i=>i.id===e.dataset.id)));tab="rate";render();window.scrollTo(0,0)});
+}
+
+// ---------- Люди ----------
+let curPerson=null;
+function renderPeople(){
+  title("Люди");
+  let h=`<div class="card"><div class="row"><input type="text" id="newName" placeholder="Имя или фамилия"><button class="btn" style="flex:0 0 auto;width:auto;margin:0;padding:9px 16px" id="addP">+</button></div></div>
+  <div class="card list">`+S.people.map(p=>{const cnt=S.items.filter(i=>i.target===p.id).length;
+    return `<div class="e" data-id="${p.id}"><div><div class="t1">${esc(p.name)}${p.self?" (я)":""}</div><div class="t2">оценок: ${cnt}</div></div><span class="muted">›</span></div>`}).join("")+`</div>`;
+  app.innerHTML=h;
+  const add=()=>{const v=document.getElementById("newName").value.trim();if(!v)return;
+    if(S.people.some(p=>p.name.toLowerCase()===v.toLowerCase())){toast("Такой человек уже есть");return}
+    S.people.push({id:uid(),name:v,self:false});save();renderPeople();toast("Добавлен: "+v)};
+  document.getElementById("addP").onclick=add;
+  document.getElementById("newName").addEventListener("keydown",e=>{if(e.key==="Enter")add()});
+  app.querySelectorAll(".e").forEach(e=>e.onclick=()=>{curPerson=e.dataset.id;tab="person";render();window.scrollTo(0,0)});
+}
+function avg(a){a=a.filter(x=>x!==undefined&&x!==null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null}
+function fmt(x){return x===null?"—":(Math.round(x*10)/10).toString().replace(".",",")}
+function tempSum(i){return TEMP.reduce((s,d)=>s+(i.values[d[0]]??0),0)}
+function renderPerson(){
+  const p=person(curPerson);if(!p){tab="people";return render()}
+  title(p.name);
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab==="people"));
+  const its=S.items.filter(i=>i.target===p.id);
+  const ch=its.filter(i=>i.type==="char"),tm=its.filter(i=>i.type==="temp");
+  const selfR=i=>i.rater===i.target;
+  const chS=ch.filter(selfR),chO=ch.filter(i=>!selfR(i));
+  let h=`<div class="card"><h2>Характер</h2>`;
+  if(!ch.length)h+=`<div class="muted">Оценок характера нет.</div>`;
+  else{
+    h+=`<div class="muted">Оценок: самооценка ${chS.length}, других ${chO.length} (оценщиков: ${new Set(chO.map(i=>i.rater)).size})</div>
+    <table class="s"><tr><th>Свойство</th><th>сам</th><th>другие</th></tr>`+
+    CHAR.map(([k,l,r])=>{const a=avg(chS.map(i=>i.values[k])),b=avg(chO.map(i=>i.values[k]));const main=b??a;
+      return `<tr><td>${l}<div class="bar"><i style="left:0;width:${main===null?0:(main-1)/4*100}%"></i></div></td><td class="n">${fmt(a)}</td><td class="n">${fmt(b)}</td></tr>`}).join("")+`</table>`;
+  }
+  h+=`</div><div class="card"><h2>Темперамент</h2>`;
+  if(!tm.length)h+=`<div class="muted">Оценок темперамента нет.</div>`;
+  else{
+    const sums=tm.map(tempSum),a=avg(sums);
+    const side=a>4?"преобладают черты сангвиника/холерика (левый столбец)":a<-4?"преобладают черты флегматика/меланхолика (правый столбец)":"черты обеих сторон примерно поровну";
+    h+=`<div class="muted">Оценок: ${tm.length}. Сумма по 16 пунктам: от −32 (всё справа) до +32 (всё слева).</div>
+    <p><b>Средняя сумма: ${fmt(a)}</b><br>${side}</p>
+    <table class="s"><tr><th>Пункт (левый вариант)</th><th>среднее</th></tr>`+
+    TEMP.map(([k,l],ix)=>`<tr><td>${ix+1}. ${l}</td><td class="n">${fmt(avg(tm.map(i=>i.values[k])))}</td></tr>`).join("")+`</table>
+    <div class="muted" style="margin-top:6px">Лутошкин: это житейское толкование, точно темперамент определяют специалисты.</div>`;
+  }
+  h+=`</div><div class="card"><label class="f">Имя</label><input type="text" id="pn" value="${esc(p.name)}">
+  <label class="chk"><input type="checkbox" id="pself" ${p.self?"checked":""}> Это я</label>
+  <button class="btn sec" id="pRate">Оценить этого человека</button>
+  <button class="btn sec" id="pBack">← К списку</button>
+  <button class="btn danger" id="pDel">Удалить человека</button></div>`;
+  app.innerHTML=h;
+  document.getElementById("pn").onchange=e=>{const v=e.target.value.trim();if(v){p.name=v;S.items.forEach(i=>{if(i.target===p.id||i.rater===p.id)i.exportedAt=null});save();title(v);toast("Переименован. Записи нужно выгрузить заново")}};
+  document.getElementById("pself").onchange=e=>{S.people.forEach(x=>x.self=false);p.self=e.target.checked;save()};
+  document.getElementById("pRate").onclick=()=>{draft=newDraft();draft.target=p.id;tab="rate";render();window.scrollTo(0,0)};
+  document.getElementById("pBack").onclick=()=>{tab="people";render()};
+  document.getElementById("pDel").onclick=()=>{
+    if(S.items.some(i=>i.target===p.id||i.rater===p.id)){toast("Сначала удали оценки этого человека");return}
+    if(confirm("Удалить "+p.name+"?")){S.people=S.people.filter(x=>x.id!==p.id);save();tab="people";render()}};
+}
+
+// ---------- Markdown ----------
+function safeName(s){return String(s).replace(/[\\/:*?"<>|#^\[\]]/g,"").trim()||"без имени"}
+function yq(s){return '"'+String(s).replace(/\\/g,"\\\\").replace(/"/g,'\\"')+'"'}
+function link(id){return yq("[["+safeName(pname(id))+"]]")}
+function fileName(i){
+  const sameDay=S.items.filter(x=>x.target===i.target&&x.rater===i.rater&&x.type===i.type&&x.date===i.date).sort((a,b)=>a.created.localeCompare(b.created));
+  const n=sameDay.length>1?" ("+(sameDay.findIndex(x=>x.id===i.id)+1)+")":"";
+  return `${i.date} ${safeName(pname(i.target))} — ${TYPE_RU[i.type]}, оценщик ${safeName(pname(i.rater))}${n}.md`;
+}
+function toMd(i){
+  const self=i.rater===i.target;
+  let fm=["---",`тип: ${TYPE_RU[i.type]}`,`кто: ${link(i.target)}`,`оценщик: ${link(i.rater)}`,`самооценка: ${self}`,`дата: ${i.date}`];
+  if(i.situation)fm.push(`ситуация: ${yq(i.situation)}`);
+  let body="";
+  if(i.type==="char"){
+    const vals=CHAR.map(d=>i.values[d[0]]).filter(v=>v!==undefined);
+    CHAR.forEach(([k])=>{if(i.values[k]!==undefined)fm.push(`${k}: ${i.values[k]}`)});
+    fm.push(`заполнено: ${vals.length}`);
+    if(vals.length)fm.push(`средний_балл: ${Math.round(avg(vals)*100)/100}`);
+    body+=`| Свойство | Балл | Противоположное |\n|---|:-:|---|\n`+CHAR.map(([k,l,r])=>`| ${l} | ${i.values[k]??"—"} | ${r} |`).join("\n")+"\n";
+    body+=`\n*Шкала: 5 — всегда, 4 — в большинстве случаев, 3 — поровну, 2 — чаще противоположное, 1 — противоположное всегда.*\n`;
+  }else{
+    const n=TEMP.filter(d=>i.values[d[0]]!==undefined).length,s=tempSum(i);
+    TEMP.forEach(([k])=>{if(i.values[k]!==undefined)fm.push(`${k}: ${i.values[k]}`)});
+    fm.push(`заполнено: ${n}`,`сумма: ${s}`,`преобладает: ${yq(s>4?"сангвиник/холерик":s<-4?"флегматик/меланхолик":"поровну")}`);
+    body+=`| № | Слева (сангвиник/холерик) | Отметка | Справа (флегматик/меланхолик) |\n|:-:|---|:-:|---|\n`+
+      TEMP.map(([k,l,r],ix)=>`| ${ix+1} | ${l} | ${i.values[k]===undefined?"—":(i.values[k]>0?"+":"")+i.values[k]} | ${r} |`).join("\n")+"\n";
+    body+=`\n*+2 — очень похож на левого, +1 — в основном на левого, 0 — на того и другого, −1/−2 — на правого. Сумма: ${s} (от −32 до +32).*\n`;
+  }
+  fm.push(`id: ${i.id}`,"tags: [лутошкин]","---");
+  let head=`\n# ${safeName(pname(i.target))} — ${TYPE_RU[i.type]}, ${i.date}\n\nОценщик: [[${safeName(pname(i.rater))}]]${self?" (самооценка)":""}${i.situation?" · Ситуация: "+i.situation:""}\n\n`;
+  if(i.note)head+=`> ${i.note.replace(/\n/g,"\n> ")}\n\n`;
+  return fm.join("\n")+head+body;
+}
+function summaryMd(){
+  const cols=CHAR.map(([k,l])=>`round(average(filter(rows.${k}, (x) => x)), 1) AS "${l.slice(0,7)}."`).join(", ");
+  return `---
+tags: [лутошкин]
+---
+# Ключи к человеку — сводка
+
+Нужен плагин **Dataview**. Заметки с оценками лежат в этой же папке.
+
+## Характер: как оценивают другие (без самооценок)
+\`\`\`dataview
+TABLE WITHOUT ID кто AS "Кто", length(rows) AS "Оценок", ${cols}
+WHERE тип = "характер" AND самооценка = false
+GROUP BY кто
+\`\`\`
+
+## Характер: самооценки
+\`\`\`dataview
+TABLE WITHOUT ID кто AS "Кто", length(rows) AS "Оценок", ${cols}
+WHERE тип = "характер" AND самооценка = true
+GROUP BY кто
+\`\`\`
+
+## Темперамент (сумма от −32 до +32; плюс — сангвиник/холерик, минус — флегматик/меланхолик)
+\`\`\`dataview
+TABLE WITHOUT ID кто AS "Кто", length(rows) AS "Оценок", round(average(rows.сумма), 1) AS "Средняя сумма", rows.преобладает AS "По оценкам"
+WHERE тип = "темперамент"
+GROUP BY кто
+\`\`\`
+
+## Все оценки
+\`\`\`dataview
+TABLE кто, оценщик, тип, ситуация, средний_балл, сумма
+WHERE contains(tags, "лутошкин") AND тип
+SORT дата DESC
+\`\`\`
+`;
+}
+
+// ---------- ZIP (без сжатия) ----------
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function makeZip(files){
+  const enc=new TextEncoder(),parts=[],central=[];let off=0;
+  const d=new Date(),dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(),tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  for(const f of files){
+    const name=enc.encode(f.name),data=enc.encode(f.text),crc=crc32(data);
+    const lh=new DataView(new ArrayBuffer(30));
+    lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);
+    lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);
+    lh.setUint16(26,name.length,true);lh.setUint16(28,0,true);
+    parts.push(new Uint8Array(lh.buffer),name,data);
+    const ch=new DataView(new ArrayBuffer(46));
+    ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,0,true);
+    ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);
+    ch.setUint16(28,name.length,true);ch.setUint32(42,off,true);
+    central.push(new Uint8Array(ch.buffer),name);
+    off+=30+name.length+data.length;
+  }
+  const csize=central.reduce((s,a)=>s+a.length,0);
+  const end=new DataView(new ArrayBuffer(22));
+  end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,csize,true);end.setUint32(16,off,true);
+  return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:"application/zip"});
+}
+
+// ---------- Экспорт ----------
+function pending(){return S.items.filter(i=>!i.exportedAt)}
+function markExported(list){const now=new Date().toISOString();list.forEach(i=>i.exportedAt=now);save()}
+function download(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+async function shareFiles(list){
+  if(!list.length){toast("Нечего выгружать");return}
+  const files=list.map(i=>new File([toMd(i)],fileName(i),{type:"text/markdown"}));
+  if(document.getElementById("withSum").checked)files.push(new File([summaryMd()],"Сводка Лутошкин.md",{type:"text/markdown"}));
+  if(!(navigator.canShare&&navigator.canShare({files}))){toast("Отправка файлов здесь не поддерживается, скачиваю ZIP");return zipExport(list)}
+  try{await navigator.share({files});
+    if(confirm("Файлы сохранены? Отметить "+list.length+" оценок как выгруженные?")){markExported(list);renderExport()}
+  }catch(e){if(e.name!=="AbortError")toast("Ошибка: "+e.message)}
+}
+function zipExport(list){
+  if(!list.length){toast("Нечего выгружать");return}
+  const folder=safeName(S.settings.folder||"Оценки");
+  const files=list.map(i=>({name:folder+"/"+fileName(i),text:toMd(i)}));
+  if(document.getElementById("withSum").checked)files.push({name:folder+"/Сводка Лутошкин.md",text:summaryMd()});
+  download(makeZip(files),`лутошкин-${today()}.zip`);
+  setTimeout(()=>{if(confirm("Отметить "+list.length+" оценок как выгруженные?")){markExported(list);renderExport()}},800);
+}
+function obsidianOne(i){
+  const v=S.settings.vault.trim();if(!v){toast("Укажи название хранилища");return}
+  const path=safeName(S.settings.folder||"Оценки")+"/"+fileName(i).replace(/\.md$/,"");
+  location.href=`obsidian://new?vault=${encodeURIComponent(v)}&file=${encodeURIComponent(path)}&content=${encodeURIComponent(toMd(i))}&overwrite=true`;
+  markExported([i]);setTimeout(renderExport,500);
+}
+function renderExport(){
+  title("Экспорт в Obsidian");
+  const p=pending();
+  let h=`<div class="card">
+   <h2>Выгрузить файлами</h2>
+   <div class="muted">Новых оценок: <b>${p.length}</b>, всего: ${S.items.length}</div>
+   <label class="chk"><input type="checkbox" id="withSum" checked> Добавить заметку «Сводка» с таблицами Dataview</label>
+   <button class="btn" id="shNew" ${p.length?"":"disabled"}>Поделиться новыми (${p.length})</button>
+   <button class="btn sec" id="shAll" ${S.items.length?"":"disabled"}>Поделиться всеми (${S.items.length})</button>
+   <div class="hint">В меню «Поделиться» выбери <b>«Сохранить в Файлы»</b> → «На iPhone» (или iCloud Drive) → <b>Obsidian → твоё хранилище → папка «Оценки»</b>. Файлы с такими же именами можно заменить: при повторной выгрузке заметки просто обновятся.</div>
+   <button class="btn sec" id="zipNew" ${p.length?"":"disabled"}>Скачать ZIP с новыми</button>
+   <button class="btn sec" id="zipAll" ${S.items.length?"":"disabled"}>Скачать ZIP со всеми</button>
+  </div>
+  <div class="card"><h2>Сразу в Obsidian, по одной</h2>
+   <label class="f">Название хранилища (vault)</label><input type="text" id="vault" value="${esc(S.settings.vault)}" placeholder="как в Obsidian">
+   <label class="f">Папка в хранилище</label><input type="text" id="folder" value="${esc(S.settings.folder)}">
+   <div class="muted" style="margin-top:6px">Каждая кнопка открывает Obsidian и создаёт заметку. Удобно, если оценок всего пара.</div>
+   <div class="list">${p.slice(0,20).map(i=>`<div class="e" data-id="${i.id}"><div><div class="t1">${esc(pname(i.target))} · ${TYPE_RU[i.type]}</div><div class="t2">${esc(i.date)} · ${esc(pname(i.rater))}</div></div><span class="badge new">→ Obsidian</span></div>`).join("")||`<div class="muted" style="padding:8px 0">Новых оценок нет.</div>`}</div>
+  </div>
+  <div class="card"><h2>Резервная копия</h2>
+   <div class="muted">Данные хранятся только на этом телефоне. Время от времени сохраняй копию.</div>
+   <button class="btn sec" id="bk">Сохранить копию (JSON)</button>
+   <button class="btn sec" id="rs">Восстановить из копии</button>
+   <input type="file" id="rsf" accept=".json,application/json" class="hidden">
+  </div>`;
+  app.innerHTML=h;
+  document.getElementById("shNew").onclick=()=>shareFiles(pending());
+  document.getElementById("shAll").onclick=()=>shareFiles(S.items.slice());
+  document.getElementById("zipNew").onclick=()=>zipExport(pending());
+  document.getElementById("zipAll").onclick=()=>zipExport(S.items.slice());
+  document.getElementById("vault").onchange=e=>{S.settings.vault=e.target.value;save()};
+  document.getElementById("folder").onchange=e=>{S.settings.folder=e.target.value||"Оценки";save()};
+  app.querySelectorAll(".list .e[data-id]").forEach(e=>e.onclick=()=>obsidianOne(S.items.find(i=>i.id===e.dataset.id)));
+  document.getElementById("bk").onclick=async()=>{
+    const f=new File([JSON.stringify(S,null,1)],`лутошкин-копия-${today()}.json`,{type:"application/json"});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f]})}catch(e){}}else download(f,f.name)};
+  document.getElementById("rs").onclick=()=>document.getElementById("rsf").click();
+  document.getElementById("rsf").onchange=async e=>{const f=e.target.files[0];if(!f)return;
+    try{const d=JSON.parse(await f.text());if(!d.people||!d.items)throw new Error("не тот файл");
+      if(confirm(`В копии ${d.people.length} людей и ${d.items.length} оценок. Заменить текущие данные?`)){S=d;load2();save();toast("Восстановлено");render()}}
+    catch(err){toast("Не получилось: "+err.message)}};
+}
+function load2(){S.settings=Object.assign({vault:"",folder:"Оценки"},S.settings||{})}
+
+load();render();
+if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+</script>
+</body>
+</html>
